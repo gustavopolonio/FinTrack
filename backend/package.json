@@ -1,0 +1,23 @@
+{
+  "name": "fintrack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "tsx watch --env-file .env src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^5.0.0",
+    "mongoose": "^8.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2"
+  }
+}
