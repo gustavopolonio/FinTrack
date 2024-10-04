@@ -29,4 +29,6 @@ const transactionSchema = new Schema({
   timestamps: true
 })
 
+transactionSchema.index({ userId: 1 })
+
 export const Transaction = model('Transaction', transactionSchema)
