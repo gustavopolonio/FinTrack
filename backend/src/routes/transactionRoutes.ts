@@ -39,7 +39,7 @@ export async function transactionRoutes(server: FastifyInstance) {
         }
 
         const transaction = await Transaction.create({
-          userId: new Types.ObjectId(userId),
+          userId: userId,
           description,
           type,
           category,
