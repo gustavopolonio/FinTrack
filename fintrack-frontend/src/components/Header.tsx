@@ -1,30 +1,16 @@
 import Image from 'next/image'
 
+import { CreateTransactionModal } from './CreateTransactionModal'
+
 export function Header() {
   return (
     <div className="navbar bg-base-300">
       <div className="flex-1">
         <a className="btn btn-ghost text-xl">FinTrack</a>
       </div>
+
       <div className="flex gap-3">
-        <button className="btn btn-accent btn-circle btn-sm w-10 h-10">
-          <div className="indicator">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2.5"
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 4.5v15m7.5-7.5h-15"
-              />
-            </svg>
-          </div>
-        </button>
+        <CreateTransactionModal />
 
         <div className="dropdown dropdown-end">
           <div
