@@ -1,11 +1,16 @@
 import fastify from 'fastify'
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import cors from '@fastify/cors'
 
 import { connectWithMongo } from './plugins/mongo'
 import { transactionRoutes } from './routes/transactionRoutes'
 import { userRoutes } from './routes/userRoutes';
 
 const server = fastify()
+
+server.register(cors, {
+  origin: true
+})
 
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
