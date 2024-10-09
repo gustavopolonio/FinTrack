@@ -12,7 +12,7 @@ interface TransactionsStore {
 }
 
 export const useTransactions = create<TransactionsStore>()((set) => ({
-  isLoading: false,
+  isLoading: true,
   transactions: [],
   // @to-do: receive userId in params of getTransactions function
   getTransactions: async () => {

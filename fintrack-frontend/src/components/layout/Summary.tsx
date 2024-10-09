@@ -53,11 +53,7 @@ export function Summary() {
         </div>
 
         <span className="block text-base-200 font-bold text-2xl">
-          {isLoading || transactions.length === 0 ? (
-            <Loader />
-          ) : (
-            formatToDollar(summary.incomes)
-          )}
+          {isLoading ? <Loader /> : formatToDollar(summary.incomes)}
         </span>
       </div>
 
@@ -81,11 +77,7 @@ export function Summary() {
         </div>
 
         <span className="block text-base-200 font-bold text-2xl">
-          {isLoading || transactions.length === 0 ? (
-            <Loader />
-          ) : (
-            formatToDollar(summary.outcomes)
-          )}
+          {isLoading ? <Loader /> : formatToDollar(summary.outcomes)}
         </span>
       </div>
 
@@ -109,11 +101,7 @@ export function Summary() {
         </div>
 
         <span className="block text-primary-content font-bold text-2xl">
-          {isLoading || transactions.length === 0 ? (
-            <Loader />
-          ) : (
-            formatToDollar(summary.balance)
-          )}
+          {isLoading ? <Loader /> : formatToDollar(summary.balance)}
         </span>
       </div>
     </div>
