@@ -1,8 +1,11 @@
 'use client'
 
+import { useTransactions } from '@/store'
+
 import { FormEvent, useRef, useState } from 'react'
 
 export function CreateTransactionModal() {
+  const { getTransactions } = useTransactions()
   const createTransactionModalRef = useRef<HTMLDialogElement>(null)
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
@@ -40,6 +43,7 @@ export function CreateTransactionModal() {
     } catch (err) {
       console.log(err)
     } finally {
+      getTransactions()
       resetCreateTransactionForm()
       createTransactionModalRef.current?.close()
       setIsCreatingTransaction(false)
@@ -73,6 +77,7 @@ export function CreateTransactionModal() {
       <dialog
         ref={createTransactionModalRef}
         className="modal modal-bottom sm:modal-middle"
+        onCancel={() => resetCreateTransactionForm()}
       >
         <div className="modal-box space-y-6">
           <div className="flex items-center justify-between">

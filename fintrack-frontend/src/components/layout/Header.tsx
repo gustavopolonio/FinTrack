@@ -1,18 +1,21 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import { CreateTransactionModal } from './CreateTransactionModal'
 
 export function Header() {
   return (
-    <div className="navbar bg-base-300">
+    <div className="navbar px-4 bg-base-300">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">FinTrack</a>
+        <Link href="/" className="text-xl">
+          FinTrack
+        </Link>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex gap-2.5">
         <CreateTransactionModal />
 
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-bottom dropdown-end flex">
           <div
             tabIndex={0}
             role="button"
@@ -32,7 +35,7 @@ export function Header() {
             className="menu menu-sm dropdown-content bg-base-100 rounded-md z-[1] mt-0 w-52 p-2 shadow"
           >
             <li>
-              <a>
+              <Link href="/login">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -46,7 +49,7 @@ export function Header() {
                   />
                 </svg>
                 Log out
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
