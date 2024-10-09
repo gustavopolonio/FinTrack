@@ -34,7 +34,8 @@ export const userController = {
 
     try {
       const transactions = await Transaction.find({
-        userId
+        userId,
+        isDeleted: false
       })
 
       return { transactions }

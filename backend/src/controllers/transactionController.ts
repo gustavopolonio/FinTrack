@@ -22,7 +22,7 @@ export const transactionController = {
       }
 
       const transaction = await Transaction.create({
-        userId: userId,
+        userId,
         description,
         type,
         category,
