@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 
 import { useTransactions } from '@/store'
-import { formatToDollar } from '@/utils'
+import { formatNumberToCurrencyWithSymbol } from '@/utils'
 import { Loader } from '../Loader'
 
 export function Summary() {
@@ -53,7 +53,11 @@ export function Summary() {
         </div>
 
         <span className="block text-base-200 font-bold text-2xl">
-          {isLoading ? <Loader /> : formatToDollar(summary.incomes)}
+          {isLoading ? (
+            <Loader />
+          ) : (
+            formatNumberToCurrencyWithSymbol(summary.incomes)
+          )}
         </span>
       </div>
 
@@ -77,11 +81,16 @@ export function Summary() {
         </div>
 
         <span className="block text-base-200 font-bold text-2xl">
-          {isLoading ? <Loader /> : formatToDollar(summary.outcomes)}
+          {isLoading ? (
+            <Loader />
+          ) : (
+            formatNumberToCurrencyWithSymbol(summary.outcomes)
+          )}
         </span>
       </div>
 
       <div className="bg-primary px-4 py-3 rounded-lg space-y-3">
+        {/* @to-do: change bg color to negative balance */}
         <div className="flex items-center justify-between">
           <span className="text-primary-content">Balance</span>
           <svg
@@ -101,7 +110,11 @@ export function Summary() {
         </div>
 
         <span className="block text-primary-content font-bold text-2xl">
-          {isLoading ? <Loader /> : formatToDollar(summary.balance)}
+          {isLoading ? (
+            <Loader />
+          ) : (
+            formatNumberToCurrencyWithSymbol(summary.balance)
+          )}
         </span>
       </div>
     </div>

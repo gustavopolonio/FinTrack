@@ -1,6 +1,11 @@
 'use client'
 
 import { useTransactions } from '@/store'
+import {
+  formatNumberToCurrencyWithoutSymbol,
+  removeCommas,
+  splitIntegerAndDecimal,
+} from '@/utils'
 
 import { FormEvent, useRef, useState } from 'react'
 
@@ -9,14 +14,14 @@ export function CreateTransactionModal() {
   const createTransactionModalRef = useRef<HTMLDialogElement>(null)
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState('')
   const [transactionType, setTransactionType] = useState('income')
   const [isCreatingTransaction, setIsCreatingTransaction] = useState(false)
 
   function resetCreateTransactionForm() {
     setDescription('')
     setCategory('')
-    setValue(0)
+    setValue('')
     setTransactionType('income')
   }
 
@@ -29,7 +34,7 @@ export function CreateTransactionModal() {
       description,
       type: transactionType,
       category,
-      value,
+      value: Number(removeCommas(value)),
     }
 
     try {
@@ -43,10 +48,40 @@ export function CreateTransactionModal() {
     } catch (err) {
       console.log(err)
     } finally {
+      // @to-do: don't get transactions if error
       getTransactions()
       resetCreateTransactionForm()
       createTransactionModalRef.current?.close()
       setIsCreatingTransaction(false)
+    }
+  }
+
+  const handleFormatValueToCurrency = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    let transactionValueInput = removeCommas(e.target.value)
+
+    if (transactionValueInput === '') {
+      setValue('')
+      return
+    }
+
+    // Check if it's a valid number
+    if (!isNaN(Number(transactionValueInput))) {
+      let { integerPart, decimalPart } = splitIntegerAndDecimal(
+        transactionValueInput,
+      )
+
+      integerPart = formatNumberToCurrencyWithoutSymbol(Number(integerPart))
+
+      if (typeof decimalPart !== 'undefined') {
+        decimalPart = decimalPart.slice(0, 2)
+        transactionValueInput = `${integerPart}.${decimalPart}`
+      } else {
+        transactionValueInput = integerPart
+      }
+
+      setValue(transactionValueInput)
     }
   }
 
@@ -112,16 +147,17 @@ export function CreateTransactionModal() {
               required
             />
 
-            <input
-              type="number"
-              placeholder="Value"
-              className="input input-bordered w-full"
-              value={value === 0 ? '' : value}
-              onChange={(e) => setValue(parseFloat(e.target.value))}
-              min={0}
-              step={0.01}
-              required
-            />
+            <label className="input input-bordered flex items-center gap-2">
+              $
+              <input
+                type="text"
+                placeholder="Value"
+                className="grow"
+                value={value}
+                onChange={handleFormatValueToCurrency}
+                required
+              />
+            </label>
 
             <input
               type="text"
