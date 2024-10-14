@@ -5,7 +5,7 @@ import { formatNumberToCurrencyWithSymbol, formatToLocalDate } from '@/utils'
 import { Loader } from '../Loader'
 
 export function TransactionsHistory() {
-  const { transactions, isLoading } = useTransactions()
+  const { isLoading, filteredTransactions } = useTransactions()
 
   if (isLoading)
     return (
@@ -16,7 +16,7 @@ export function TransactionsHistory() {
 
   return (
     <div className="overflow-x-auto">
-      {transactions.length > 0 ? (
+      {filteredTransactions.length > 0 ? (
         <table className="table">
           <thead>
             <tr>
@@ -27,7 +27,7 @@ export function TransactionsHistory() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
+            {filteredTransactions.map((transaction) => (
               <tr key={transaction._id}>
                 <td>{transaction.description}</td>
                 <td>

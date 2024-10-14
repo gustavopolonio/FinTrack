@@ -1,4 +1,22 @@
+'use client'
+
+import { ChangeEvent, useEffect, useState } from 'react'
+
+import { useTransactions } from '@/store'
+
 export function SearchTransactionsForm() {
+  const { isLoading, filterTransactionsByDescription } = useTransactions()
+  const [searchValue, setSearchValue] = useState('')
+
+  function handleSearchTransactions(e: ChangeEvent<HTMLInputElement>) {
+    setSearchValue(e.target.value)
+    filterTransactionsByDescription(e.target.value)
+  }
+
+  useEffect(() => {
+    if (isLoading) setSearchValue('')
+  }, [isLoading])
+
   return (
     <label className="input input-bordered flex items-center gap-2">
       <svg
@@ -18,6 +36,8 @@ export function SearchTransactionsForm() {
         type="text"
         className="grow"
         placeholder="Search for description"
+        value={searchValue}
+        onChange={handleSearchTransactions}
       />
     </label>
   )
