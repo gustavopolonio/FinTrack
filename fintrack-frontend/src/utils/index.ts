@@ -1,3 +1,6 @@
+import { format } from 'date-fns'
+import { enUS } from 'date-fns/locale/en-US'
+
 export function formatNumberToCurrencyWithoutSymbol(value: number) {
   return new Intl.NumberFormat('en-US').format(value)
 }
@@ -19,4 +22,10 @@ export function removeCommas(str: string) {
 export function splitIntegerAndDecimal(value: string) {
   const [integerPart, decimalPart = undefined] = value.split('.')
   return { integerPart, decimalPart }
+}
+
+export function formatToLocalDate(date: string) {
+  return format(date, 'MM/dd/yyyy', {
+    locale: enUS,
+  })
 }

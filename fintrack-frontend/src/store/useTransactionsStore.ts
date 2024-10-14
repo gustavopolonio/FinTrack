@@ -1,8 +1,12 @@
 import { create } from 'zustand'
 
 interface Transaction {
+  _id: string
   type: 'income' | 'outcome'
   value: number
+  category: string
+  description: string
+  createdAt: string
 }
 
 interface TransactionsStore {
