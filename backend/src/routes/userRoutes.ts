@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 import { userController } from "../controllers/userController";
-import { createUserSchema, getUserTransactionsSchema } from "../schemas/userSchemas";
+import { createUserSchema, getUserTransactionsParamsSchema, getUserTransactionsQuerySchema } from "../schemas/userSchemas";
 
 export async function userRoutes(server: FastifyInstance) {
   server.withTypeProvider<ZodTypeProvider>().post(
@@ -13,7 +13,7 @@ export async function userRoutes(server: FastifyInstance) {
 
   server.withTypeProvider<ZodTypeProvider>().get(
     '/users/:userId/transactions',
-    { schema: { params: getUserTransactionsSchema } },
+    { schema: { params: getUserTransactionsParamsSchema, querystring: getUserTransactionsQuerySchema } },
     userController.getUserTransactions
   )
 }
