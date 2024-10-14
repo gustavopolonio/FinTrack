@@ -35,8 +35,8 @@ export const userController = {
     try {
       const transactions = await Transaction.find({
         userId,
-        isDeleted: false
-      })
+        isDeleted: false,
+      }).sort({ createdAt: 'descending' })
 
       return { transactions }
     } catch (err: any) {
