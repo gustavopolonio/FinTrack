@@ -1,22 +1,22 @@
 'use client'
 
-import { useTransactions } from '@/store'
+import { useRef, useState } from 'react'
+
 import {
   formatNumberToCurrencyWithoutSymbol,
   removeCommas,
   splitIntegerAndDecimal,
 } from '@/utils'
-
-import { FormEvent, useRef, useState } from 'react'
+import { createTransaction } from '@/actions/createTransaction'
 
 export function CreateTransactionModal() {
-  const { getTransactions } = useTransactions()
   const createTransactionModalRef = useRef<HTMLDialogElement>(null)
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
   const [value, setValue] = useState('')
-  const [transactionType, setTransactionType] = useState('income')
-  const [isCreatingTransaction, setIsCreatingTransaction] = useState(false)
+  const [transactionType, setTransactionType] = useState<'income' | 'outcome'>(
+    'income',
+  )
 
   function resetCreateTransactionForm() {
     setDescription('')
@@ -25,35 +25,18 @@ export function CreateTransactionModal() {
     setTransactionType('income')
   }
 
-  async function handleCreateTransaction(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setIsCreatingTransaction(true)
-
+  async function handleCreateTransaction() {
     const transactionData = {
-      userId: process.env.NEXT_PUBLIC_USER_ID,
+      userId: process.env.NEXT_PUBLIC_USER_ID!,
       description,
       type: transactionType,
       category,
       value: Number(removeCommas(value)),
     }
 
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/transactions`, {
-        method: 'POST',
-        body: JSON.stringify(transactionData),
-        headers: {
-          'content-type': 'application/json',
-        },
-      })
-    } catch (err) {
-      console.log(err)
-    } finally {
-      // @to-do: don't get transactions if error
-      getTransactions()
-      resetCreateTransactionForm()
-      createTransactionModalRef.current?.close()
-      setIsCreatingTransaction(false)
-    }
+    await createTransaction(transactionData)
+    resetCreateTransactionForm()
+    createTransactionModalRef.current?.close()
   }
 
   const handleFormatValueToCurrency = (
@@ -112,12 +95,12 @@ export function CreateTransactionModal() {
       <dialog
         ref={createTransactionModalRef}
         className="modal modal-bottom sm:modal-middle"
-        onCancel={() => resetCreateTransactionForm()}
+        onClose={() => resetCreateTransactionForm()}
       >
         <div className="modal-box space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-lg">New transaction</h3>
-            <form method="dialog" onSubmit={() => resetCreateTransactionForm()}>
+            <form method="dialog">
               <button className="btn btn-circle btn-sm w-10 h-10">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -135,7 +118,7 @@ export function CreateTransactionModal() {
             </form>
           </div>
 
-          <form className="space-y-3" onSubmit={handleCreateTransaction}>
+          <form className="space-y-3" action={handleCreateTransaction}>
             <input
               type="text"
               name="description"
@@ -187,21 +170,14 @@ export function CreateTransactionModal() {
 
             <button
               type="submit"
-              className={`btn w-full btn-neutral text-white !mt-7 ${isCreatingTransaction ? 'btn-disabled' : ''}`}
+              className={`btn w-full btn-neutral text-white !mt-7`}
             >
-              {isCreatingTransaction ? (
-                <span className="loading loading-spinner"></span>
-              ) : (
-                'Create'
-              )}
+              {/* {isPending ? <Loader /> : 'Create'} */}
+              Create
             </button>
           </form>
         </div>
-        <form
-          method="dialog"
-          className="modal-backdrop"
-          onSubmit={() => resetCreateTransactionForm()}
-        >
+        <form method="dialog" className="modal-backdrop">
           <button>close</button>
         </form>
       </dialog>

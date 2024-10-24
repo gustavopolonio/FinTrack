@@ -1,19 +1,10 @@
-'use client'
-
-import { useEffect } from 'react'
-
-import { useTransactions } from '@/store'
+import { getTransactions } from '@/lib/api/getTransactions'
 import { formatNumberToCurrencyWithSymbol } from '@/utils'
-import { Loader } from '../Loader'
 
-export function Summary() {
-  const { transactions, getTransactions, isLoading } = useTransactions()
+export async function Summary() {
+  const transactions = await getTransactions()
 
-  useEffect(() => {
-    getTransactions()
-  }, [getTransactions])
-
-  const summary = transactions.reduce(
+  const summary = transactions?.reduce(
     (acc, transaction) => {
       if (transaction.type === 'income') {
         acc.incomes += transaction.value
@@ -53,11 +44,7 @@ export function Summary() {
         </div>
 
         <span className="block text-base-200 font-bold text-2xl">
-          {isLoading ? (
-            <Loader />
-          ) : (
-            formatNumberToCurrencyWithSymbol(summary.incomes)
-          )}
+          {formatNumberToCurrencyWithSymbol(summary?.incomes ?? 0)}
         </span>
       </div>
 
@@ -81,11 +68,7 @@ export function Summary() {
         </div>
 
         <span className="block text-base-200 font-bold text-2xl">
-          {isLoading ? (
-            <Loader />
-          ) : (
-            formatNumberToCurrencyWithSymbol(summary.outcomes)
-          )}
+          {formatNumberToCurrencyWithSymbol(summary?.outcomes ?? 0)}
         </span>
       </div>
 
@@ -110,11 +93,7 @@ export function Summary() {
         </div>
 
         <span className="block text-primary-content font-bold text-2xl">
-          {isLoading ? (
-            <Loader />
-          ) : (
-            formatNumberToCurrencyWithSymbol(summary.balance)
-          )}
+          {formatNumberToCurrencyWithSymbol(summary?.balance ?? 0)}
         </span>
       </div>
     </div>

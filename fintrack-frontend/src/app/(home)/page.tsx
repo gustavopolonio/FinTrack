@@ -1,13 +1,13 @@
 import { Header } from '@/components/layout/Header'
 import { Summary } from '@/components/layout/Summary'
-import { TransactionsContainer } from '@/components/layout/TransactionsContainer'
+import { TransactionsHistoryContainer } from '@/components/layout/TransactionsHistoryContainer'
 
 export default async function Home() {
   return (
     <>
       <Header />
       <Summary />
-      <TransactionsContainer />
+      <TransactionsHistoryContainer />
     </>
   )
 }
